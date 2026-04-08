@@ -1,12 +1,7 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{
-    Mint,
-    MintTo,
-    Token,
-    TokenAccount,
-    TransferChecked,
-    mint_to,
-    transfer_checked,
+use anchor_spl::{
+    associated_token::AssociatedToken,
+    token::{ Mint, MintTo, Token, TokenAccount, TransferChecked, mint_to, transfer_checked },
 };
 use constant_product_curve::ConstantProduct;
 
@@ -77,7 +72,7 @@ pub struct Deposit<'info> {
 
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
-    pub associated_token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
 }
 
 impl<'info> Deposit<'info> {
@@ -112,7 +107,7 @@ impl<'info> Deposit<'info> {
         self.deposit_tokens(false, y)?;
 
         // Mint LP tokens to user as proof of liquidity provision
-        self.mint_lp_tokens(amount);
+        self.mint_lp_tokens(amount)?;
 
         Ok(())
     }
@@ -136,7 +131,7 @@ impl<'info> Deposit<'info> {
         };
 
         transfer_checked(
-            CpiContext::new(self.token_program.to_account_info(), TransferChecked {
+            CpiContext::new(self.token_program.key(), TransferChecked {
                 from,
                 to,
                 mint,
@@ -157,7 +152,7 @@ impl<'info> Deposit<'info> {
 
         mint_to(
             CpiContext::new_with_signer(
-                self.token_program.to_account_info(),
+                self.token_program.key(),
                 MintTo {
                     mint: self.mint_lp.to_account_info(),
                     authority: self.config.to_account_info(),

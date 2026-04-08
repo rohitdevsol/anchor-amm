@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::{ token::{ Mint, Token, TokenAccount } };
+use anchor_spl::{ associated_token::AssociatedToken, token::{ Mint, Token, TokenAccount } };
 
 use crate::{ state::Config };
 
@@ -54,7 +54,7 @@ pub struct Initialize<'info> {
 
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
-    pub associated_token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
 }
 
 impl<'info> Initialize<'info> {

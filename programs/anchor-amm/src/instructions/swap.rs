@@ -1,5 +1,8 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{ Mint, Token, TokenAccount, TransferChecked, transfer_checked };
+use anchor_spl::{
+    associated_token::AssociatedToken,
+    token::{ Mint, Token, TokenAccount, TransferChecked, transfer_checked },
+};
 use constant_product_curve::{ ConstantProduct, LiquidityPair };
 
 use crate::{ errors::AmmError, state::Config };
@@ -62,7 +65,7 @@ pub struct Swap<'info> {
 
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
-    pub associated_token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
 }
 
 impl<'info> Swap<'info> {
@@ -115,7 +118,7 @@ impl<'info> Swap<'info> {
         };
 
         transfer_checked(
-            CpiContext::new(self.token_program.to_account_info(), TransferChecked {
+            CpiContext::new(self.token_program.key(), TransferChecked {
                 from,
                 to,
                 mint,
@@ -150,7 +153,7 @@ impl<'info> Swap<'info> {
 
         transfer_checked(
             CpiContext::new_with_signer(
-                self.token_program.to_account_info(),
+                self.token_program.key(),
                 TransferChecked {
                     from,
                     to,
