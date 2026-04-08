@@ -21,7 +21,9 @@ custom-panic = []
 
 
 [dependencies]
-anchor-lang = "0.32.1"
+anchor-lang = { version = "0.31.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.31.1", features = ["token"] }
+constant-product-curve = { git = "https://github.com/deanmlittle/constant-product-curve.git" }
 
 
 [lints.rust]
