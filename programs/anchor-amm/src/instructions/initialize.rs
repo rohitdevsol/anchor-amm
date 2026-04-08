@@ -1,9 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::{
-    associated_token::AssociatedToken,
-    token::{ Mint, Token, TokenAccount },
-    token_2022::spl_token_2022::extension::AccountType,
-};
+use anchor_spl::{ token::{ Mint, Token, TokenAccount } };
 
 use crate::{ state::Config };
 
@@ -13,8 +9,10 @@ pub struct Initialize<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
 
+    #[account(mint::token_program = token_program)]
     pub mint_x: Account<'info, Mint>,
 
+    #[account(mint::token_program = token_program)]
     pub mint_y: Account<'info, Mint>,
 
     #[account(

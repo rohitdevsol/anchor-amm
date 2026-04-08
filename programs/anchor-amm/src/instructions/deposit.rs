@@ -17,8 +17,10 @@ pub struct Deposit<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
 
+    #[account(mint::token_program = token_program)]
     pub mint_x: Account<'info, Mint>,
 
+    #[account(mint::token_program = token_program)]
     pub mint_y: Account<'info, Mint>,
 
     #[account(
