@@ -6,7 +6,7 @@ pub mod errors;
 pub use state::*;
 pub use instructions::*;
 pub use errors::*;
-declare_id!("8mDQUcdAxwvqhrLUtiKFqjzNyG9e5PsWVtnNoGpZXBoZ");
+declare_id!("66ArtvQLJBuKoqKzJthkuKx1bpHb5Sxri9yrtgpYvnRu");
 
 #[program]
 pub mod anchor_amm {
